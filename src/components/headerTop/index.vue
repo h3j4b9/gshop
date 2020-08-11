@@ -19,9 +19,7 @@ export default {
     }
   },
   methods: {
-    testClick () {
-      console.log(32321323133);
-    },
+
   },
 }
 </script>

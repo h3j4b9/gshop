@@ -1,9 +1,5 @@
 import ajax from './ajax';
 
-const bastUrl = 'http://localhost:4000/';
-
-export const add = ajax(bastUrl + 'position/40.10038,116.36867');
-
 // const BASE_URL = 'http://localhost:4000'
 const BASE_URL = '/api';
 

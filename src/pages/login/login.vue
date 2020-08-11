@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import {add} from '@/api';
+import {reqFoodCategorys} from '@/api';
 
 export default {
   data () {
@@ -64,7 +64,7 @@ export default {
   methods: {
     async testClick () {
       console.log(432434242);
-      let res = await add();
+      let res = await reqFoodCategorys();
       console.log(res);
     },
   },
