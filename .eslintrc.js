@@ -25,6 +25,18 @@ module.exports = {
     'generator-star-spacing': 'off',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-unused-vars': 'warn',  //把该条提示信息转换成警告信息
+    // 'no-unused-vars': 'warn',  //把该条提示信息转换成警告信息
+    'semi': ['error', 'always'],
+    'comma-dangle': [
+      'error',
+      {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'always-multiline',
+        functions: 'always-multiline',
+      },
+    ],
+    'space-before-function-paren': 'off',
   }
 }

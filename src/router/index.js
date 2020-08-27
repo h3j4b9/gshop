@@ -20,33 +20,33 @@ export default new VueRouter({
       path: '/msite',
       component: Msite,
       meta: {
-        showFooter: true
-      }
+        showFooter: true,
+      },
     },
     {
       path: '/search',
       component: Search,
       meta: {
-        showFooter: true
-      }
+        showFooter: true,
+      },
     },
     {
       path: '/order',
       component: Order,
       meta: {
-        showFooter: true
-      }
+        showFooter: true,
+      },
     },
     {
       path: '/profile',
       component: Profile,
       meta: {
-        showFooter: true
-      }
+        showFooter: true,
+      },
     },
     {
       path: '/login',
-      component: Login
-    }
-  ]
-})
+      component: Login,
+    },
+  ],
+});

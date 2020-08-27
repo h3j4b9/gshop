@@ -15,13 +15,13 @@ export default {
     title: {
       type: String,
       default: '',
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
 
   },
-}
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

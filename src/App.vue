@@ -6,18 +6,25 @@
 </template>
 
 <script>
-import FooterGuide from './components/FooterGuide/FooterGuide'
-import Msite from './pages/Msite/Msite'
+import FooterGuide from './components/FooterGuide/FooterGuide';
+
+import {mapActions} from 'vuex';
 
 export default {
   components: {
     FooterGuide,
-    Msite
-  }
-}
+  },
+  created () {
+    // this.$store.dispatch('getAddress');
+    this.getAddress();
+  },
+  methods: {
+    ...mapActions(['getAddress']),
+  },
+};
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/styl">
   .app
     width 100%
     height 100%
