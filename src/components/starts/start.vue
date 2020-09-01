@@ -12,7 +12,7 @@ export default {
     },
     size: {
       type: Number,
-    }
+    },
   },
   computed: {
     starClass () {
@@ -23,16 +23,16 @@ export default {
       for (let i = 0; i < scoreZhen; i++) {
         srcc.push('on');
       }
-      if (score*10 - scoreZhen*10 >= 5) {
+      if (score * 10 - scoreZhen * 10 >= 5) {
         srcc.push('half');
       }
       while (srcc.length < 5) {
         srcc.push('off');
       }
       return srcc;
-    }
+    },
   },
-}
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

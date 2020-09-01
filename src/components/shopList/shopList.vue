@@ -56,19 +56,19 @@ export default {
   data () {
     return {
       baseImageUrl: 'http://cangdu.org:8001/img/',
-    }
+    };
   },
   components: {
     Starts,
   },
   computed: {
-    ...mapState(['shops'])
+    ...mapState(['shops']),
   },
   created () {
     this.$store.dispatch('getShops');
     console.log(this.shops);
   },
-}
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

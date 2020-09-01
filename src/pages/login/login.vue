@@ -4,44 +4,47 @@
       <div class="login_header">
         <h2 class="login_logo">硅谷外卖</h2>
         <div class="login_header_title">
-          <a href="javascript:;" class="on">短信登录</a>
-          <a href="javascript:;">密码登录</a>
+          <a href="javascript:;" :class="{on: cssShow}" @click="cssShow = true">短信登录</a>
+          <a href="javascript:;" :class="{on: !cssShow}" @click="cssShow = false">密码登录</a>
         </div>
       </div>
       <div class="login_content">
-        <form>
-          <div class="on">
+        <form @submit.prevent="loginEvent">
+          <div :class="{on: cssShow}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号">
-              <button disabled="disabled" class="get_verification">获取验证码</button>
+              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+              <button :disabled="!bottColor" class="get_verification"
+              :class="{button_color: bottColor}" @click.prevent="getCode">
+              {{comTime ? `已发送(${comTime}s)` : '获取验证码'}}</button>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码">
+              <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
               <a href="javascript:;">《用户服务协议》</a>
             </section>
           </div>
-          <div>
+          <div :class="{on: !cssShow}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input type="text" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input type="text" maxlength="8" placeholder="密码" v-model="pwd" v-if="showPass">
+                <input type="password" maxlength="8" placeholder="密码" v-model="pwd" v-else>
+                <div class="switch_button" :class="showPass ? 'on' : 'off'" @click="showPass = !showPass">
+                  <div class="switch_circle" :class="{right: showPass}"></div>
+                  <span class="switch_text">{{showPass ? 'abc' : '...'}}</span>
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
                 <img class="get_verification" src="./images/captcha.svg" alt="captcha">
               </section>
             </section>
           </div>
-          <button class="login_submit" @click="testClick">登录</button>
+          <button class="login_submit">登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
@@ -49,26 +52,82 @@
         <i class="iconfont icon-jiantou2"></i>
       </a>
     </div>
+    <AlertTip :alertText="AlertText" v-if="AlertShow" @closeTip="closeTip"></AlertTip>
   </section>
 </template>
 
 <script>
 import {reqFoodCategorys} from '@/api';
+import AlertTip from '../../components/AlertTip/AlertTip';
 
 export default {
   data () {
     return {
+      cssShow: true,
+      phone: '',
+      code: '',
 
-    }
+      name: '',
+      pwd: '',
+      captcha: '',
+      comTime: 0,
+      showPass: false,
+      AlertText: '',
+      AlertShow: false,
+    };
+  },
+  components: {
+    AlertTip,
+  },
+  computed: {
+    bottColor () {
+      return /^1\d{10}$/.test(this.phone);
+    },
   },
   methods: {
+    getCode () {
+      if (!this.comTime) {
+        this.comTime = 30;
+        let intervalId = setInterval(() => {
+          this.comTime--;
+          if (this.comTime <= 0) {
+            clearInterval(intervalId);
+          }
+        }, 1000);
+      }
+    },
+    loginEvent () {
+      if (this.cssShow) {
+        if (!this.bottColor) {
+          this.showAlert('手机号不正确');
+        } else if (/^\d{6}$/.test(this.code)) {
+          this.showAlert('验证码不正确');
+        }
+      } else {
+        if (!this.name) {
+          this.showAlert('用户名不正确');
+        } else if (!this.pwd) {
+          this.showAlert('密码不正确');
+        } else if (!this.captcha) {
+          this.showAlert('验证码不正确');
+        }
+      }
+    },
+    showAlert (text) {
+      this.AlertText = text;
+      this.AlertShow = true;
+    },
+    closeTip () {
+      this.AlertShow = false;
+      this.AlertText = '';
+    },
     async testClick () {
       console.log(432434242);
       let res = await reqFoodCategorys();
       console.log(res);
     },
   },
-}
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -132,6 +191,8 @@ export default {
                 color #ccc
                 font-size 14px
                 background transparent
+                &.button_color
+                  color black
             .login_verification
               position relative
               margin-top 16px
@@ -171,6 +232,8 @@ export default {
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                   transition transform .3s
+                  &.right
+                    transform translateX(30px)
             .login_hint
               margin-top 12px
               color #999
