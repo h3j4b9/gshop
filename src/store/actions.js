@@ -4,12 +4,14 @@ import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS,
+  RECEIVE_USER_INFO,
 } from './mutation-types';
 
 import {
   reqAddress,
   reqFoodCategorys,
   reqShops,
+  reqUserInfo,
 } from '../api';
 
 export default {
@@ -34,6 +36,18 @@ export default {
     let ref = await reqShops(latitude, longitude);
     if (ref.code === 0) {
       commit(RECEIVE_SHOPS, {shops: ref.data});
+    }
+  },
+  // 获取用户信息
+  recoudUser ({commit}, userInfo) {
+    commit(RECEIVE_USER_INFO, {userInfo});
+  },
+
+  async getUser ({commit}) {
+    let res = await reqUserInfo();
+    if (res.code === 0) {
+      let userInfo = res.data;
+      commit(RECEIVE_USER_INFO, {userInfo});
     }
   },
 };

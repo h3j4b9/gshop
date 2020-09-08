@@ -2,12 +2,13 @@
   <section class="msite">
     <!-- 首页头部 -->
     <headerTop :title="address.name">
-      <span class="header_search" slot="left">
+      <router-link class="header_search" slot="left" to="/seArch">
         <i class="iconfont icon-sousuo"></i>
-      </span>
-      <span class="header_login" slot="right">
-        <span class="header_login_text">登录|注册</span>
-      </span>
+      </router-link>
+      <router-link class="header_login" slot="right" :to="userInfo._id ? 'userinfo' : '/login'">
+        <i class="iconfont icon-person" v-if="userInfo._id"></i>
+        <span class="header_login_text" v-else>登录|注册</span>
+      </router-link>
     </headerTop>
 
     <!--首页导航-->
@@ -72,7 +73,7 @@ export default {
     // swiperSlide,
   },
   computed: {
-    ...mapState(['address', 'categorys']),
+    ...mapState(['address', 'categorys', 'userInfo']),
 
     categorysArr () {
       let {categorys} = this; // 解构赋值

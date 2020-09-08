@@ -40,7 +40,8 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha"
+                @click="setCaptcha" ref="captcha">
               </section>
             </section>
           </div>
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import {reqFoodCategorys} from '@/api';
+import {reqPwdLogin, reqSendCode, reqSmsLogin} from '@/api';
 import AlertTip from '../../components/AlertTip/AlertTip';
 
 export default {
@@ -74,6 +75,7 @@ export default {
       showPass: false,
       AlertText: '',
       AlertShow: false,
+      intervalId: '',
     };
   },
   components: {
@@ -85,23 +87,35 @@ export default {
     },
   },
   methods: {
-    getCode () {
+    async getCode () {
       if (!this.comTime) {
         this.comTime = 30;
-        let intervalId = setInterval(() => {
+        this.intervalId = setInterval(() => {
           this.comTime--;
           if (this.comTime <= 0) {
-            clearInterval(intervalId);
+            clearInterval(this.intervalId);
           }
         }, 1000);
+        console.log(this.phone);
+        let res = await reqSendCode(this.phone);
+        console.log(res);
+        if (res.code === 1) {
+          this.showAlert(res.msg);
+          if (this.comTime) {
+            this.comTime = 0;
+            clearInterval(this.intervalId);
+          }
+        }
       }
     },
     loginEvent () {
       if (this.cssShow) {
         if (!this.bottColor) {
           this.showAlert('手机号不正确');
-        } else if (/^\d{6}$/.test(this.code)) {
+        } else if (!/^\d{6}$/.test(this.code)) {
           this.showAlert('验证码不正确');
+        } else {
+          this.smsLogin();
         }
       } else {
         if (!this.name) {
@@ -110,7 +124,32 @@ export default {
           this.showAlert('密码不正确');
         } else if (!this.captcha) {
           this.showAlert('验证码不正确');
+        } else {
+          this.pwdLogin();
         }
+      }
+    },
+    async smsLogin () {
+      let res = await reqSmsLogin(this.phone, this.code);
+      console.log(res);
+      if (res.code === 0) {
+        this.$store.dispatch('recoudUser', res.data);
+        this.$router.replace('/profile');
+      } else {
+        this.showAlert(res.msg);
+      }
+    },
+    async pwdLogin () {
+      let {name, pwd, captcha} = this;
+      let res = await reqPwdLogin({name, pwd, captcha});
+      console.log(res);
+      if (res.code === 0) {
+        this.$store.dispatch('recoudUser', res.data);
+        this.$router.replace('/profile');
+      } else {
+        this.showAlert(res.msg);
+        this.setCaptcha();
+        this.captcha = '';
       }
     },
     showAlert (text) {
@@ -121,10 +160,9 @@ export default {
       this.AlertShow = false;
       this.AlertText = '';
     },
-    async testClick () {
-      console.log(432434242);
-      let res = await reqFoodCategorys();
-      console.log(res);
+    setCaptcha (event) {
+      // event.target.src = 'http://localhost:4000/captcha?time=' + Date.now();
+      this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now();
     },
   },
 };

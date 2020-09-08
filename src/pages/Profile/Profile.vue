@@ -1,18 +1,18 @@
 <template>
-   <section class="profile">
+  <section class="profile">
       <headerTop title='我的'></headerTop>
       <section class="profile-number">
-        <router-link to="/login" class="profile-link">
+        <router-link :to="userInfo._id ? 'userinfo' : '/login'" class="profile-link">
           <div class="profile_image">
             <i class="iconfont icon-person"></i>
           </div>
           <div class="user-info">
-            <p class="user-info-top">登录/注册</p>
+            <p class="user-info-top" v-if="!userInfo.phone">{{userInfo.name || '登录/注册'}}</p>
             <p>
               <span class="user-icon">
                 <i class="iconfont icon-shouji icon-mobile"></i>
               </span>
-              <span class="icon-mobile-number">暂无绑定手机号</span>
+              <span class="icon-mobile-number">{{userInfo.phone || '暂无绑定手机号'}}</span>
             </p>
           </div>
           <span class="arrow">
@@ -88,17 +88,37 @@
           </div>
         </a>
       </section>
+      <section class="profile_my_order border-1px" v-if="userInfo._id">
+    <!-- <van-button type="danger">危险按钮</van-button> -->
+    <button style="width: 100%">退出登录</button>
     </section>
+  </section>
 </template>
 
 <script>
-import headerTop from '../../components/headerTop/index'
+import headerTop from '../../components/headerTop/index';
+import { mapState } from 'vuex';
+// import Vue from 'vue';
+// import { Button } from 'vant';
+
+// Vue.use(Button);
 
 export default {
   components: {
-    headerTop
-  }
-}
+    headerTop,
+  },
+  computed: {
+    ...mapState(['userInfo']),
+  },
+  mounted () {
+    this.kkk();
+  },
+  methods: {
+    kkk () {
+      console.log(this.userInfo);
+    },
+  },
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
