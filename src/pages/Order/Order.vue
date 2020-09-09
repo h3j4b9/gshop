@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import headerTop from '../../components/headerTop/index'
+import headerTop from '../../components/headerTop/index';
 
 export default {
   components: {
-    headerTop
-  }
-}
+    headerTop,
+  },
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

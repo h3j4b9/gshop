@@ -5,6 +5,7 @@ import {
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS,
   RECEIVE_USER_INFO,
+  LOGOUT,
 } from './mutation-types';
 
 import {
@@ -12,6 +13,7 @@ import {
   reqFoodCategorys,
   reqShops,
   reqUserInfo,
+  reqLogout,
 } from '../api';
 
 export default {
@@ -48,6 +50,15 @@ export default {
     if (res.code === 0) {
       let userInfo = res.data;
       commit(RECEIVE_USER_INFO, {userInfo});
+    }
+  },
+
+  // 退出
+  async reqLogout ({commit}) {
+    let res = await reqLogout();
+    console.log(res);
+    if (res.code === 0) {
+      commit(LOGOUT);
     }
   },
 };

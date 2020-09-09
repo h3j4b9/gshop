@@ -89,15 +89,17 @@
         </a>
       </section>
       <section class="profile_my_order border-1px" v-if="userInfo._id">
-    <!-- <van-button type="danger">危险按钮</van-button> -->
-    <button style="width: 100%">退出登录</button>
-    </section>
+        <!-- <van-button type="danger">危险按钮</van-button> -->
+        <!-- <button style="width: 100%" @click="outTo">退出登录</button> -->
+        <mt-button type="danger" style="width: 100%" @click="outTo">退出登录</mt-button>
+      </section>
   </section>
 </template>
 
 <script>
 import headerTop from '../../components/headerTop/index';
 import { mapState } from 'vuex';
+import {MessageBox, Toast} from 'mint-ui';
 // import Vue from 'vue';
 // import { Button } from 'vant';
 
@@ -111,11 +113,20 @@ export default {
     ...mapState(['userInfo']),
   },
   mounted () {
-    this.kkk();
+    // this.kkk();
   },
   methods: {
-    kkk () {
-      console.log(this.userInfo);
+    outTo () {
+      MessageBox.confirm('确认退出吗？').then(
+        action => {
+          console.log('退出');
+          this.$store.dispatch('reqLogout');
+          Toast('退出成功');
+        },
+        action => {
+          console.log('取消');
+        },
+      );
     },
   },
 };

@@ -5,6 +5,7 @@ import {
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS,
   RECEIVE_USER_INFO,
+  LOGOUT,
 } from './mutation-types';
 
 export default {
@@ -19,5 +20,8 @@ export default {
   },
   [RECEIVE_USER_INFO] (state, {userInfo}) {
     state.userInfo = userInfo;
+  },
+  [LOGOUT] (state) {
+    state.userInfo = {};
   },
 };

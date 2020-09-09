@@ -1,20 +1,26 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import Msite from '../pages/Msite/Msite.vue'
-import Search from '../pages/Search/Search.vue'
-import Order from '../pages/Order/Order.vue'
-import Profile from '../pages/Profile/Profile.vue'
+import Msite from '../pages/Msite/Msite.vue';
+import Search from '../pages/Search/Search.vue';
+import Order from '../pages/Order/Order.vue';
+import Profile from '../pages/Profile/Profile.vue';
+import Shop from '../pages/Shop/Shop.vue';
 
-import Login from '../pages/login/login.vue'
+import ShopRatings from '../pages/Shop/components/ShopRatings.vue';
+import ShopInfo from '../pages/Shop/components/ShopInfo.vue';
+import ShopHeader from '../pages/Shop/components/ShopHeader.vue';
+import ShopGoods from '../pages/Shop/components/ShopGoods.vue';
 
-Vue.use(VueRouter)
+import Login from '../pages/login/login.vue';
+
+Vue.use(VueRouter);
 
 export default new VueRouter({
   routes: [
     {
       path: '/',
-      redirect: '/msite'
+      redirect: '/msite',
     },
     {
       path: '/msite',
@@ -47,6 +53,32 @@ export default new VueRouter({
     {
       path: '/login',
       component: Login,
+    },
+    {
+      path: '/shop',
+      component: Shop,
+      children: [
+        {
+          path: '/shop/ratings',
+          component: ShopRatings,
+        },
+        {
+          path: '/shop/info',
+          component: ShopInfo,
+        },
+        {
+          path: '/shop/header',
+          component: ShopHeader,
+        },
+        {
+          path: '/shop/goods',
+          component: ShopGoods,
+        },
+        {
+          path: '',
+          redirect: '/shop/goods',
+        },
+      ],
     },
   ],
 });
