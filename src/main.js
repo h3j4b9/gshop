@@ -5,6 +5,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+import './mock/mockServe';
+
 // 注册全局组件标签
 import {Button} from 'mint-ui';
 Vue.component(Button.name, Button);

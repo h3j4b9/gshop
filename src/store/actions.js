@@ -6,6 +6,9 @@ import {
   RECEIVE_SHOPS,
   RECEIVE_USER_INFO,
   LOGOUT,
+  RECEIVE_GOODS,
+  RECEIVE_RATINGS,
+  RECEIVE_INFO,
 } from './mutation-types';
 
 import {
@@ -14,6 +17,9 @@ import {
   reqShops,
   reqUserInfo,
   reqLogout,
+  reqShopInfo,
+  reqShopRatings,
+  reqShopGoods,
 } from '../api';
 
 export default {
@@ -59,6 +65,30 @@ export default {
     console.log(res);
     if (res.code === 0) {
       commit(LOGOUT);
+    }
+  },
+
+  async reqShopGoods ({commit}) {
+    let res = await reqShopGoods();
+    if (res.code === 0) {
+      let goods = res.data;
+      commit(RECEIVE_GOODS, {goods});
+    }
+  },
+
+  async reqShopInfo ({commit}) {
+    let res = await reqShopInfo();
+    if (res.code === 0) {
+      let info = res.data;
+      commit(RECEIVE_INFO, {info});
+    }
+  },
+
+  async reqShopRatings ({commit}) {
+    let res = await reqShopRatings();
+    if (res.code === 0) {
+      let ratings = res.data;
+      commit(RECEIVE_RATINGS, {ratings});
     }
   },
 };

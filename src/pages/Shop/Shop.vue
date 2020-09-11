@@ -23,6 +23,9 @@ export default {
   components: {
     ShopHeader,
   },
+  mounted () {
+    this.$store.dispatch('reqShopGoods');
+  },
 };
 </script>
 
